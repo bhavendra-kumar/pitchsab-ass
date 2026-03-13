@@ -9,7 +9,11 @@ function ChatBox() {
 
   const bottomRef = useRef(null);
 
-  const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const apiBaseUrl =
+    import.meta.env.VITE_API_URL ||
+    (import.meta.env.DEV
+      ? "http://localhost:5000"
+      : "https://pitchsab-ass.onrender.com");
 
   useEffect(() => {
     let cancelled = false;

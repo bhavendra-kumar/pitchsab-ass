@@ -10,7 +10,30 @@ const chatRoutes = require("./routes/chatRoutes");
 
 const app = express();
 
-app.use(cors());
+const parseOrigins = (origins) =>
+  String(origins || "")
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean);
+
+const allowedOrigins =
+  parseOrigins(process.env.CORS_ORIGIN).length > 0
+    ? parseOrigins(process.env.CORS_ORIGIN)
+    : [
+        "https://pitchsab.netlify.app",
+        "http://localhost:5173",
+        "http://localhost:5174",
+      ];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"), false);
+    },
+  }),
+);
 app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
