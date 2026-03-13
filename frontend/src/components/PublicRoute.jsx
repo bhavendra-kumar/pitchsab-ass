@@ -5,13 +5,12 @@ const hasValidToken = () => {
   return Boolean(token && token !== "undefined" && token !== "null");
 };
 
-function ProtectedRoute({ children }) {
-
-  if (!hasValidToken()) {
-    return <Navigate to="/login" />;
+function PublicRoute({ children }) {
+  if (hasValidToken()) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children;
 }
 
-export default ProtectedRoute;
+export default PublicRoute;

@@ -1,55 +1,84 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
+  const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
   const handleLogin = async () => {
+    try {
 
-    const res = await axios.post(
-      "http://localhost:5000/api/auth/login",
-      { email, password }
-    );
+      setLoading(true);
 
-    localStorage.setItem("token", res.data.token);
+      const res = await axios.post(
+        `${apiBaseUrl}/api/auth/login`,
+        { email, password }
+      );
 
-    navigate("/dashboard");
+      localStorage.setItem("token", res.data.token);
+
+      navigate("/dashboard");
+
+    } catch (error) {
+      alert(error?.response?.data?.message || "Invalid login credentials");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-[#0f172a] relative overflow-hidden">
 
-      <div className="bg-white p-8 rounded-xl shadow-md w-96">
+      {/* Background glow */}
+      <div className="absolute w-[500px] h-[500px] bg-purple-600 blur-[150px] opacity-20 rounded-full"></div>
 
-        <h2 className="text-2xl font-bold mb-6">Login</h2>
+      <div className="bg-white/5 backdrop-blur-lg border border-gray-800 p-10 rounded-2xl shadow-xl w-96 relative z-10">
+
+        <h2 className="text-3xl font-bold text-center mb-6 text-white">
+          Welcome Back
+        </h2>
+
+        <p className="text-gray-400 text-center mb-8">
+          Login to continue building your startup
+        </p>
 
         <input
           type="email"
           placeholder="Email"
-          className="border p-2 w-full mb-3"
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          className="w-full mb-4 bg-[#1e293b] border border-gray-700 rounded-lg p-3 text-white focus:border-blue-500 outline-none"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}/>
 
         <input
           type="password"
           placeholder="Password"
-          className="border p-2 w-full mb-4"
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          className="w-full mb-6 bg-[#1e293b] border border-gray-700 rounded-lg p-3 text-white focus:border-blue-500 outline-none"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}/>
 
         <button
           onClick={handleLogin}
-          className="bg-blue-600 text-white w-full py-2 rounded"
-        >
-          Login
+          disabled={loading}
+          className="w-full bg-gradient-to-r from-blue-500 to-purple-500 py-3 rounded-xl text-white font-semibold hover:scale-105 transition disabled:opacity-60">
+          {loading ? "Logging in..." : "Login"}
         </button>
 
+        <p className="text-gray-400 text-sm text-center mt-6">
+          Don&apos;t have an account?{" "}
+          <Link to="/signup" className="text-blue-400 hover:underline">
+            Sign up
+          </Link>
+        </p>
+
       </div>
+
     </div>
   );
 }

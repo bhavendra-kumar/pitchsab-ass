@@ -1,40 +1,33 @@
 function HowItWorks() {
   return (
-    <section id="how" className="py-20 bg-gray-50 px-10 text-center">
+    <section id="how" className="py-24 px-10 text-center">
 
-      <h2 className="text-3xl font-bold text-gray-800">
-        How Pitchsap Works
+      <h2 className="text-4xl font-bold mb-16">
+        How It Works
       </h2>
 
-      <div className="grid md:grid-cols-4 gap-8 mt-12">
+      <div className="grid md:grid-cols-4 gap-10">
 
-        <div className="bg-white shadow-md p-6 rounded-xl">
-          <h3 className="font-semibold">1. Submit Idea</h3>
-          <p className="text-gray-500 mt-2">
-            Share your startup idea with the platform.
-          </p>
-        </div>
+        {[
+          "Submit your idea",
+          "Get expert feedback",
+          "Refine your concept",
+          "Launch your startup"
+        ].map((step, index) => (
 
-        <div className="bg-white shadow-md p-6 rounded-xl">
-          <h3 className="font-semibold">2. Get Feedback</h3>
-          <p className="text-gray-500 mt-2">
-            Receive insights from experienced mentors.
-          </p>
-        </div>
+          <div
+            key={index}
+            className="bg-white/5 border border-gray-800 p-6 rounded-xl"
+          >
+            <div className="text-blue-400 text-2xl font-bold mb-3">
+              {index + 1}
+            </div>
 
-        <div className="bg-white shadow-md p-6 rounded-xl">
-          <h3 className="font-semibold">3. Improve Concept</h3>
-          <p className="text-gray-500 mt-2">
-            Refine your idea using structured feedback.
-          </p>
-        </div>
+            <p className="text-gray-400">{step}</p>
 
-        <div className="bg-white shadow-md p-6 rounded-xl">
-          <h3 className="font-semibold">4. Build Startup</h3>
-          <p className="text-gray-500 mt-2">
-            Turn your validated idea into a real startup.
-          </p>
-        </div>
+          </div>
+
+        ))}
 
       </div>
 
